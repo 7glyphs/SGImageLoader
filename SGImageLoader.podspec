@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.platform = :ios, "6.0"
   s.source = { :git => "https://github.com/7glyphs/SGImageLoader.git", :tag => "1.0.0" }
   s.requires_arc = true
-  s.source_files = "SGImageLoader/"
+  s.source_files = "SGImageLoader.{h,m}"
   s.frameworks = "UIKit"
   
 end
