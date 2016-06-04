@@ -43,13 +43,31 @@
     else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            UIImage* image = [[UIImage alloc] initWithData:imageData];
-            [_imageCache setObject:image forKey:url];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion) {
-                    completion(image);
+            if (imageData) {
+                UIImage* image = [[UIImage alloc] initWithData:imageData];
+                if (image) {
+                    [_imageCache setObject:image forKey:url];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (completion) {
+                            completion(image);
+                        }
+                    });
                 }
-            });
+                else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (completion) {
+                            completion(nil);
+                        }
+                    });
+                }
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (completion) {
+                        completion(nil);
+                    }
+                });
+            }
         });
     }
 }
